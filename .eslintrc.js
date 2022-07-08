@@ -19,6 +19,7 @@ module.exports = {
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'vue/multi-word-component-names': 0,
     'space-before-function-paren': 0,
-    'new-cap': 0
+    'new-cap': 0,
+    camelcase: 0
   }
 }

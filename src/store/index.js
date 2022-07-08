@@ -11,11 +11,28 @@ export default createStore({
     count: 1
   },
   getters: {
-    getForm: state => state.form,
     getBmi: state => {
       const bmi =
         state.form.weight / ((state.form.tall * state.form.tall) / 100 / 100)
       return Math.floor(bmi * 100) / 100
+    },
+    muscleMini: state => {
+      const base = state.form.weight
+      const eatMore = {
+        fat: base,
+        protein: 1.5 * base,
+        carbohydrate: 3.5 * base
+      }
+      return eatMore
+    },
+    musclePlus: state => {
+      const base = state.form.weight
+      const eatMore = {
+        fat: base,
+        protein: 1.5 * base,
+        carbohydrate: 4 * base
+      }
+      return eatMore
     }
   },
   mutations: {
