@@ -1,5 +1,11 @@
 import { createStore } from 'vuex'
 
+// 保存vuex
+import VuexPersistence from 'vuex-persist'
+const vuexLocal = new VuexPersistence({
+  storage: window.localStorage
+})
+
 export default createStore({
   state: {
     form: {
@@ -12,8 +18,7 @@ export default createStore({
   },
   getters: {
     getBmi: state => {
-      const bmi =
-        state.form.weight / ((state.form.tall * state.form.tall) / 100 / 100)
+      const bmi = state.form.weight / ((state.form.tall * state.form.tall) / 100 / 100)
       return Math.floor(bmi * 100) / 100
     },
     muscleMini: state => {
@@ -37,13 +42,16 @@ export default createStore({
   },
   mutations: {
     setForm: (state, date) => {
-      // state.form.name = date.name
-      // state.form.sex = date.sex
-      // state.form.weight = date.weight
       state.form = date
     },
     addOne(state) {
       state.count++
+    },
+    restForm: state => {
+      state.form.name = ''
+      state.form.sex = ''
+      state.form.weight = 0
+      state.form.tall = 0
     }
   },
   actions: {
@@ -53,5 +61,6 @@ export default createStore({
       }, 1)
     }
   },
-  modules: {}
+  modules: {},
+  plugins: [vuexLocal.plugin]
 })

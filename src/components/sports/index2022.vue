@@ -15,20 +15,29 @@
     <!-- 食物数量表单 -->
     <el-col :span="16">
       <el-card shadow="hover">
-        <elementTable :tableConfig="calculateTableConfig" :tableDate="calculateFood">
-          <template #btn="scope">
-            <el-input-number
-              :min="1"
-              :step="50"
-              size="small"
-              v-model="scope.data.food_weight"
-              @change="weightChange(scope.index, scope.data)"
-            ></el-input-number>
-            <el-button link type="primary" size="small" style="margin-left: 5px" @click="delFood(scope.index)"
-              >删除</el-button
-            >
-          </template>
-        </elementTable>
+        <el-table style="width: 100%" :data="calculateFood" height="283px" show-summary>
+          <el-table-column prop="food_name" label="名称"> </el-table-column>
+          <el-table-column prop="food_heat" label="热量"> </el-table-column>
+          <el-table-column prop="food_protein" label="蛋白质"> </el-table-column>
+          <el-table-column prop="food_fat" label="脂肪"> </el-table-column>
+          <el-table-column prop="food_carbohydrate" label="碳水"></el-table-column>
+
+          <!-- 末端按钮 -->
+          <el-table-column fixed="right" width="180px">
+            <template #default="scope">
+              <el-input-number
+                :min="1"
+                :step="50"
+                v-model="scope.row.food_weight"
+                size="small"
+                @change="weightChange(scope.$index, scope.row)"
+              />
+              <el-button link type="primary" size="small" @click="delFood(scope.$index)" style="margin-left: 5px"
+                >删除</el-button
+              >
+            </template>
+          </el-table-column>
+        </el-table>
       </el-card>
     </el-col>
 
@@ -226,24 +235,7 @@ export default defineComponent({
   setup() {
     const ruleFormRef = ref()
     const store = useStore()
-    const calculateTableConfig = reactive({
-      height: '283px',
-      showSummary: true,
-      thead: [
-        { label: '名称', props: 'food_name' },
-        { label: '热量/千卡', props: 'food_heat' },
-        { label: '蛋白质/克', props: 'food_protein' },
-        { label: '脂肪/克', props: 'food_fat' },
-        { label: '碳水/克', props: 'food_carbohydrate' },
-        {
-          label: '数量/克',
-          type: 'slot',
-          slot_name: 'btn',
-          width: 180,
-          fixed: 'right'
-        }
-      ]
-    })
+
     // 表单数据
     const formIndex = reactive(store.state.form)
     const selectFood = ref('stapleFood')
@@ -325,8 +317,11 @@ export default defineComponent({
 
     // 重置表单
     const resetForm = ref => {
+      console.log(ref)
       if (!ref) return
+      // ref.resetFields()
       store.commit('restForm')
+      console.log(store.state.form)
     }
 
     // 添加食物进入计算表单
@@ -366,7 +361,7 @@ export default defineComponent({
     }
     // 食物数量发生改变
     const weightChange = (index, row) => {
-      const { food_id, food_type: res } = row
+      const { food_id, food_type: res, food_heat, food_protein, food_fat, food_carbohydrate, food_weight } = row
 
       if (res === 'stapleFood') {
         for (const item of stapleFood) {
@@ -397,10 +392,10 @@ export default defineComponent({
           }
         }
       }
-      // row.food_heat = foodVariety(food_heat, food_weight)
-      // row.food_protein = foodVariety(res, food_id, food_protein, food_weight)
-      // row.food_fat = foodVariety(res, food_id, food_fat, food_weight)
-      // row.food_carbohydrate = foodVariety(res, food_carbohydrate, food_weight)
+      row.food_heat = foodVariety(food_heat, food_weight)
+      row.food_protein = foodVariety(res, food_id, food_protein, food_weight)
+      row.food_fat = foodVariety(res, food_id, food_fat, food_weight)
+      row.food_carbohydrate = foodVariety(res, food_carbohydrate, food_weight)
     }
     //
     return {
@@ -422,8 +417,7 @@ export default defineComponent({
       vegetable,
       meet,
       other,
-      dialogTitle,
-      calculateTableConfig
+      dialogTitle
     }
   }
 })

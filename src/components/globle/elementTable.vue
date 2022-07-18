@@ -1,33 +1,49 @@
 <template>
-  <el-table :data="tableData" style="width: 100%">
-    <!-- <el-table-column prop="date" label="Date" width="180" />
-    <el-table-column prop="name" label="Name" width="180" />
-    <el-table-column prop="address" label="Address" /> -->
-    <el-table-column prop="address" :label="item" v-for="(item, index) in title" :key="index"></el-table-column>
+  <el-table :data="tableDate" style="width: 100%" :height="tableConfig.height" :show-summary="tableConfig.showSummary">
+    <template v-for="(item, index) in tableConfig.thead" :key="index">
+      <el-table-column :prop="item.props" :label="item.label" v-if="item.props" />
+
+      <el-table-column
+        :prop="item.props"
+        :label="item.label"
+        v-if="item.type == 'slot'"
+        :min-width="item.width"
+        :fixed="item.fixed"
+      >
+        <template #default="scope">
+          <slot :name="item.slot_name" :data="scope.row" :index="scope.$index"></slot>
+        </template>
+      </el-table-column>
+    </template>
   </el-table>
 </template>
 
 <script>
+import { reactive, watch } from 'vue'
+
 export default {
   props: {
-    tableData: {
+    tableDate: {
       type: Array,
       require: true,
       default: function () {
         return []
       }
     },
-    title: {
-      type: Array,
-      require: true,
-      default: function () {
-        return []
-      }
+    tableConfig: {
+      type: Object,
+      require: true
     }
   },
+
   setup(props) {
-    console.log(props.tableData)
-    console.log(props.title)
+    const data = reactive([])
+    watch(props.tableDate, (newValue, oldValue) => {
+      console.log('sum ==> ', newValue, oldValue)
+    })
+    console.log(props.tableDate)
+    // console.log(props.tableConfig)
+    return { data }
   }
 }
 </script>
