@@ -3,6 +3,9 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 
+import service from '@/utils/http'
+import VueAxios from 'vue-axios' // 导入 vue-axios
+
 // 引用ElementPlus
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
@@ -25,6 +28,9 @@ const MyPlugin = {
 
 const app = createApp(App)
 app.config.globalProperties.$mitt = new mitt()
+app.config.globalProperties.$http = service
+
+app.use(VueAxios, service)
 app.use(store)
 app.use(router)
 app.use(ElementPlus)

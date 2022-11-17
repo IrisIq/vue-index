@@ -1,12 +1,10 @@
 <template>
   <div class="index">
-    <!-- <initialization></initialization> -->
     <index />
   </div>
 </template>
 
 <script>
-// import initialization from '@/components/sports/initialization.vue'
 import index from '@/components/sports/index.vue'
 
 export default {
@@ -18,9 +16,22 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.index {
-  margin-top: 6px;
-  margin-left: 6px;
-  min-width: 800px;
+@media screen and (max-width: 500px) {
+  .index {
+    font-size: 16px;
+    width: 100%;
+    background-color: red; // min-width: 750px;
+  }
+}
+@media screen and (min-width: 501px) {
+  .index {
+    width: 60%;
+    height: 100%;
+    margin: 10px auto;
+    // margin-top: 6px;
+    // margin-left: 6px;
+    min-width: 750px;
+    // background-color: blue;
+  }
 }
 </style>

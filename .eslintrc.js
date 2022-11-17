@@ -20,6 +20,8 @@ module.exports = {
     'vue/multi-word-component-names': 0,
     'space-before-function-paren': 0,
     'new-cap': 0,
-    camelcase: 0
+    camelcase: 0,
+    json: 0,
+    'no-unused-vars': 0
   }
 }
