@@ -14,7 +14,8 @@
       <!-- 个人信息 -->
       <PersonalInformation :formIndex="formIndex" :dialogVisible="dialogVisible" />
 
-      <el-card>        <el-radio-group v-model="model">
+      <el-card>
+        <el-radio-group v-model="model">
           <el-radio :label="1">小白增肌</el-radio>
           <el-radio :label="2">增肌Plus</el-radio>
           <el-radio :label="3" disabled>减脂模式</el-radio>
@@ -22,10 +23,7 @@
           <el-radio :label="5" disabled>DIY倍率模式</el-radio>
         </el-radio-group>
       </el-card>
-      <div>
-        <div></div>
-        <div></div>
-      </div>
+
       <!-- 相关数据 -->
       <div class="topCards">
         <!-- 增肌小白 -->
@@ -162,7 +160,7 @@ export default defineComponent({
     ...mapGetters(['muscleMini', 'musclePlus'])
   },
 
-  setup() {
+  setup () {
     const data = reactive({
       columnsIndex: null, // 选中的数据
       calculateFood: [], // 计算表数据
@@ -338,49 +336,49 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-@media screen and (max-width: 500px) {
-  .index {
-    font-size: 16px;
+  @media screen and (max-width: 500px) {
+    .index {
+      font-size: 16px;
+      width: 100%;
+      background-color: red; // min-width: 750px;
+    }
+  }
+  @media screen and (min-width: 501px) {
+    .index {
+      width: 60%;
+      height: 100%;
+      margin: 10px auto;
+      // margin-top: 6px;
+      // margin-left: 6px;
+      min-width: 750px;
+      // background-color: blue;
+    }
+  }
+  .cont {
     width: 100%;
-    background-color: red; // min-width: 750px;
   }
-}
-@media screen and (min-width: 501px) {
-  .index {
-    width: 60%;
+  .top {
+    // height: 60vh;
+    .topTable {
+      max-height: 100%;
+    }
+    .topCards {
+      max-height: 100%;
+    }
+  }
+
+  .btn {
+    margin: 0 !important;
+  }
+  .el-tabs {
+    // width: 30%;
     height: 100%;
-    margin: 10px auto;
-    // margin-top: 6px;
-    // margin-left: 6px;
-    min-width: 750px;
-    // background-color: blue;
+    // min-width: 300px;
   }
-}
-.cont {
-  width: 100%;
-}
-.top {
-  // height: 60vh;
-  .topTable {
-    max-height: 100%;
-  }
-  .topCards {
-    max-height: 100%;
-  }
-}
 
-.btn {
-  margin: 0 !important;
-}
-.el-tabs {
-  // width: 30%;
-  height: 100%;
-  // min-width: 300px;
-}
-
-.warning {
-  margin-top: 10px;
-  min-width: 800px;
-  // max-height: 400px;
-}
+  .warning {
+    margin-top: 10px;
+    min-width: 800px;
+    // max-height: 400px;
+  }
 </style>
