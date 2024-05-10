@@ -12,22 +12,9 @@
         <el-col :span="4" class="btn" v-if="!dialogVisible"> 您好，{{ formIndex.name }} </el-col>
       </el-row>
       <!-- 个人信息 -->
-      <el-card v-show="!dialogVisible">
-        <el-row :gutter="10">
-          <el-col :span="8">
-            <span>性别:{{ formIndex.sex }}</span>
-          </el-col>
-          <el-col :span="8"
-            ><span>体重:{{ formIndex.weight }}</span> <span v-if="formIndex.weight">kg</span></el-col
-          >
-          <el-col :span="8">
-            <span>bmi:{{ getBmi }} </span>
-          </el-col>
-        </el-row>
-      </el-card>
+      <PersonalInformation :formIndex="formIndex" :dialogVisible="dialogVisible" />
 
-      <el-card>
-        <el-radio-group v-model="model">
+      <el-card>        <el-radio-group v-model="model">
           <el-radio :label="1">小白增肌</el-radio>
           <el-radio :label="2">增肌Plus</el-radio>
           <el-radio :label="3" disabled>减脂模式</el-radio>
@@ -165,13 +152,14 @@ import { useStore, mapState, mapGetters } from 'vuex'
 import { ElMessage } from 'element-plus'
 // import { stapleFood, vegetable, meet, other } from './staple.js'
 import tabTable from '@/components/sports/tabTable'
+import PersonalInformation from '@/components/sports/personalInformation'
 
 export default defineComponent({
   name: 'index',
-  components: { tabTable },
+  components: { tabTable, PersonalInformation },
   computed: {
     ...mapState(['form', 'count']),
-    ...mapGetters(['getBmi', 'muscleMini', 'musclePlus'])
+    ...mapGetters(['muscleMini', 'musclePlus'])
   },
 
   setup() {

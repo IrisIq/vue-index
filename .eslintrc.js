@@ -3,8 +3,10 @@ module.exports = {
   root: true,
   env: {
     // 表示在node环境下，启用ESLint
-    node: true
+    node: true,
+    'vue/setup-compiler-macros': true
   },
+  parser: 'vue-eslint-parser',
   extends: ['plugin:vue/vue3-essential', '@vue/standard'],
   parserOptions: {
     parser: '@babel/eslint-parser'
@@ -22,6 +24,8 @@ module.exports = {
     'new-cap': 0,
     camelcase: 0,
     json: 0,
-    'no-unused-vars': 0
+    'no-unused-vars': 0,
+    'no-undef': 'off'
+
   }
 }
