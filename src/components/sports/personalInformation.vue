@@ -2,12 +2,9 @@
  * @Author: IrisIq
  * @Date: 2024-05-10 15:19:47
  * @LastEditors: IrisIq
- * @LastEditTime: 2024-05-10 17:14:33
- * @Description: content
+ * @LastEditTime: 2024-05-14 15:06:35
+ * @Description: 个人信息组件
 -->
-<!--
-    * 个人信息组件
- -->
  <template>
   <el-card v-show="!dialogVisible">
     <el-row :gutter="10">

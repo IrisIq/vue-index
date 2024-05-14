@@ -1,16 +1,7 @@
 <template>
   <div class="cont">
     <div class="top">
-      <el-row :gutter="10">
-        <!-- 页头 -->
-        <el-col :span="11">
-          <el-page-header content="运动饮食计算器" />
-        </el-col>
-        <el-col :span="7" class="btn">
-          <el-button type="primary" size="small" @click="dialogVisible = true">重置基础数据</el-button>
-        </el-col>
-        <el-col :span="4" class="btn" v-if="!dialogVisible"> 您好，{{ formIndex.name }} </el-col>
-      </el-row>
+      <Header v-model="dialogVisible" :model="formIndex"></Header>
       <!-- 个人信息 -->
       <PersonalInformation :formIndex="formIndex" :dialogVisible="dialogVisible" />
 
@@ -151,10 +142,11 @@ import { ElMessage } from 'element-plus'
 // import { stapleFood, vegetable, meet, other } from './staple.js'
 import tabTable from '@/components/sports/tabTable'
 import PersonalInformation from '@/components/sports/personalInformation'
+import Header from '@/components/sports/header'
 
 export default defineComponent({
   name: 'index',
-  components: { tabTable, PersonalInformation },
+  components: { tabTable, PersonalInformation, Header },
   computed: {
     ...mapState(['form', 'count']),
     ...mapGetters(['muscleMini', 'musclePlus'])
