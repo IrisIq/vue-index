@@ -1,3 +1,10 @@
+/*
+ * @Author: IrisIq
+ * @Date: 2022-07-02 20:59:08
+ * @LastEditors: IrisIq
+ * @LastEditTime: 2024-05-14 16:23:16
+ * @Description: content
+ */
 import { createStore } from 'vuex'
 
 // 保存vuex

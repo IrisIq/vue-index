@@ -2,19 +2,20 @@
  * @Author: IrisIq
  * @Date: 2024-05-14 11:45:13
  * @LastEditors: IrisIq
- * @LastEditTime: 2024-05-14 14:53:45
+ * @LastEditTime: 2024-05-15 11:33:23
  * @Description: 计算器弹窗表单
 -->
 <template>
-  <el-dialog v-model="dialogVisible" title="请输入相关信息" width="50%">
+  <el-dialog
+    :model-value="dialogVisible"
+    title="请输入相关信息"
+    width="50%"
+    :close-on-click-modal="false"
+    :close-on-press-escape="false"
+    :show-close="false"
+  >
     <!-- 数据表单 -->
-    <el-form
-      ref="ruleFormRef"
-      :model="form"
-      label-width="100px"
-      label-position="left"
-      :rules="rules"
-    >
+    <el-form ref="ruleFormRef" :model="form" label-width="100px" label-position="left" :rules="rules">
       <!-- 名称 -->
       <el-form-item label="名称">
         <el-input v-model="form.name" />
@@ -30,39 +31,34 @@
       <el-form-item label="体重(kg)" prop="weight">
         <el-input v-model="form.weight" autosize autocomplete="" />
       </el-form-item>
+      <!-- 身高 -->
+      <el-form-item label="身高(cm)" prop="tall">
+        <el-input-number v-model="form.tall" type="number" :max="250" />
+      </el-form-item>
     </el-form>
     <!-- 提交按钮 -->
     <template #footer>
       <span class="dialog-footer">
-        <el-button type="primary" @click="restData(ruleFormRef)">
-          重置
-        </el-button>
-        <el-button type="primary" @click="submitData(ruleFormRef)">
-          提交
-        </el-button>
+        <el-button type="primary" @click="resetForm(ruleFormRef)"> 重置 </el-button>
+        <el-button type="primary" @click="submitData(ruleFormRef)"> 提交 </el-button>
       </span>
     </template>
   </el-dialog>
 </template>
 
 <script>
-import { defineComponent, reactive, ref, getCurrentInstance } from 'vue'
+import { defineProps, defineEmits, toRefs, defineComponent, reactive, ref, getCurrentInstance, defineModel } from 'vue'
+import { useStore } from 'vuex'
+import { ElMessage } from 'element-plus'
 
 export default defineComponent({
-  setup() {
-    let dialogVisible = ref(true)
+  setup (props, { emit: $emit }) {
+    const store = useStore()
     const ruleFormRef = ref()
-    const { proxy } = getCurrentInstance()
-
-    function sendMitt() {
-      proxy.$mitt.emit('basicDataForm', form)
-    }
+    const { dialogVisible } = toRefs(props)
+    // const props = defineProps(['dialogVisible'])
     // 表单数据
-    const form = reactive({
-      name: '',
-      sex: '',
-      weight: ''
-    })
+    const form = reactive(store.state.form)
     // 表单规则
     const rules = reactive({
       sex: [
@@ -81,17 +77,24 @@ export default defineComponent({
       ]
     })
     // 提交表单
-    const submitData = ref => {
-      if (!ref) return
-      ref.validate((valid, fields) => {
-        if (!valid) {
-          console.log('请输入信息', fields)
-          return
+    const submitData = formEl => {
+      if (!formEl) return
+      formEl.validate(valid => {
+        if (valid) {
+          ElMessage({
+            message: '欢迎' + form.name,
+            type: 'success'
+          })
+          // console.log(emit)
+          console.log($emit)
+          $emit('update:modelValue', false)
+          store.commit('setForm', form)
+        } else {
+          ElMessage({
+            message: '你必须填写相关信息',
+            type: 'warning'
+          })
         }
-        console.log(form)
-        dialogVisible = false
-        console.log(dialogVisible)
-        sendMitt()
       })
     }
     // 重置表单
@@ -103,13 +106,12 @@ export default defineComponent({
     // 传送表单数据
 
     return {
-      dialogVisible,
       form,
       ruleFormRef,
       rules,
       submitData,
       resetForm,
-      sendMitt
+      dialogVisible
     }
   }
 })

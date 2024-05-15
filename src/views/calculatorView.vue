@@ -1,17 +1,17 @@
 <template>
   <div class="cont">
     <div class="top">
-      <Header v-model="dialogVisible" :model="formIndex"></Header>
+      <Header v-model="dialogVisible" :formIndex="formIndex"></Header>
       <!-- 个人信息 -->
       <PersonalInformation :formIndex="formIndex" :dialogVisible="dialogVisible" />
 
       <el-card>
         <el-radio-group v-model="model">
-          <el-radio :label="1">小白增肌</el-radio>
-          <el-radio :label="2">增肌Plus</el-radio>
-          <el-radio :label="3" disabled>减脂模式</el-radio>
-          <el-radio :label="4" disabled>日常模式</el-radio>
-          <el-radio :label="5" disabled>DIY倍率模式</el-radio>
+          <el-radio :value="1">小白增肌</el-radio>
+          <el-radio :value="2">增肌Plus</el-radio>
+          <el-radio :value="3" disabled>减脂模式</el-radio>
+          <el-radio :value="4" disabled>日常模式</el-radio>
+          <el-radio :value="5" disabled>DIY倍率模式</el-radio>
         </el-radio-group>
       </el-card>
 
@@ -87,66 +87,24 @@
       </el-card>
     </div>
 
-    <!-- dialog -->
-    <element-dialog
-      :dialogVisible="dialogVisible"
-      :title="dialogTitle"
-      :close-on-click-modal="false"
-      :close-on-press-escape="false"
-      :show-close="false"
-    >
-      <div>
-        <el-form
-          ref="ruleFormRef"
-          :model="formIndex"
-          label-width="100px"
-          label-position="left"
-          :rules="rules"
-          sum-text="合计"
-        >
-          <!-- 名称 -->
-          <el-form-item label="名称" prop="name">
-            <el-input v-model="formIndex.name" />
-          </el-form-item>
-          <!-- 性别选择 -->
-          <el-form-item label="性别" prop="sex">
-            <el-select v-model="formIndex.sex" placeholder="请选择你的性别">
-              <el-option label="男" value="男" />
-              <el-option label="女" value="女" />
-            </el-select>
-          </el-form-item>
-          <!-- 体重 -->
-          <el-form-item label="体重(kg)" prop="weight">
-            <el-input-number v-model="formIndex.weight" type="number" :max="300" />
-          </el-form-item>
-          <!-- 身高 -->
-          <el-form-item label="身高(cm)" prop="tall">
-            <el-input-number v-model="formIndex.tall" type="number" :max="250" />
-          </el-form-item>
-        </el-form>
-      </div>
-      <template v-slot:btn>
-        <span class="dialog-footer">
-          <el-button type="primary" @click="resetForm(ruleFormRef)"> 重置 </el-button>
-          <el-button type="primary" @click="submitForm(ruleFormRef)"> 提交 </el-button>
-        </span>
-      </template>
-    </element-dialog>
+    <Initialization v-model="dialogVisible" />
+
   </div>
 </template>
 
 <script>
 import { defineComponent, ref, reactive, toRefs, watch } from 'vue'
 import { useStore, mapState, mapGetters } from 'vuex'
-import { ElMessage } from 'element-plus'
+
 // import { stapleFood, vegetable, meet, other } from './staple.js'
 import tabTable from '@/components/sports/tabTable'
 import PersonalInformation from '@/components/sports/personalInformation'
 import Header from '@/components/sports/header'
+import Initialization from '@/components/sports/initialization'
 
 export default defineComponent({
   name: 'index',
-  components: { tabTable, PersonalInformation, Header },
+  components: { tabTable, PersonalInformation, Header, Initialization },
   computed: {
     ...mapState(['form', 'count']),
     ...mapGetters(['muscleMini', 'musclePlus'])
@@ -186,8 +144,6 @@ export default defineComponent({
     // 表单数据
     const formIndex = reactive(store.state.form)
     const selectFood = ref('1')
-
-    const dialogTitle = ref('请输入详细信息')
     // 表单规则
     const rules = reactive({
       name: [
@@ -319,7 +275,6 @@ export default defineComponent({
       weightChange,
       searchFood,
       model,
-      dialogTitle,
       calculateTableConfig,
       ...dataRef
     }
