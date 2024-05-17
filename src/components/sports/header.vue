@@ -2,7 +2,7 @@
  * @Author: IrisIq
  * @Date: 2024-05-14 11:45:13
  * @LastEditors: IrisIq
- * @LastEditTime: 2024-05-14 15:14:04
+ * @LastEditTime: 2024-05-16 15:58:54
  * @Description: 计算器Header部分
 -->
 <template>
@@ -12,7 +12,7 @@
       <el-page-header content="运动饮食计算器" />
     </el-col>
     <el-col :span="7" class="btn">
-      <el-button type="primary" size="small" @click="modelValue=true">重置基础数据</el-button>
+      <el-button type="primary" size="small" @click="modelValue = true">重置基础数据</el-button>
     </el-col>
     <el-col :span="4" class="btn" v-if="!modelValue"> 您好，{{ formIndex?.name }} </el-col>
   </el-row>

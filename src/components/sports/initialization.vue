@@ -2,7 +2,7 @@
  * @Author: IrisIq
  * @Date: 2024-05-14 11:45:13
  * @LastEditors: IrisIq
- * @LastEditTime: 2024-05-15 11:33:23
+ * @LastEditTime: 2024-05-16 15:55:45
  * @Description: 计算器弹窗表单
 -->
 <template>
@@ -56,7 +56,6 @@ export default defineComponent({
     const store = useStore()
     const ruleFormRef = ref()
     const { dialogVisible } = toRefs(props)
-    // const props = defineProps(['dialogVisible'])
     // 表单数据
     const form = reactive(store.state.form)
     // 表单规则

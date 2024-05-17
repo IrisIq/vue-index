@@ -1,0 +1,12 @@
+{
+  "小白增肌": {
+    "protein": "1",
+    "fat": "1.5",
+    "carbohydrate":"3.5"
+  },
+  "增肌PLUS":{
+    "protein": "1",
+    "fat": "1.5",
+    "carbohydrate":"4"
+  }
+}

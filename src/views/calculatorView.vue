@@ -4,43 +4,8 @@
       <Header v-model="dialogVisible" :formIndex="formIndex"></Header>
       <!-- 个人信息 -->
       <PersonalInformation :formIndex="formIndex" :dialogVisible="dialogVisible" />
-
-      <el-card>
-        <el-radio-group v-model="model">
-          <el-radio :value="1">小白增肌</el-radio>
-          <el-radio :value="2">增肌Plus</el-radio>
-          <el-radio :value="3" disabled>减脂模式</el-radio>
-          <el-radio :value="4" disabled>日常模式</el-radio>
-          <el-radio :value="5" disabled>DIY倍率模式</el-radio>
-        </el-radio-group>
-      </el-card>
-
-      <!-- 相关数据 -->
-      <div class="topCards">
-        <!-- 增肌小白 -->
-        <el-card shadow="hover" v-if="model == 1">
-          <el-descriptions title="目标总数">
-            <el-descriptions-item label="蛋白质">{{ muscleMini.protein }} </el-descriptions-item>
-            <el-descriptions-item label="脂肪">{{ muscleMini.fat }} </el-descriptions-item>
-            <el-descriptions-item label="碳水">
-              {{ muscleMini.carbohydrate }}
-            </el-descriptions-item>
-          </el-descriptions>
-        </el-card>
-
-        <!--增肌PLus  -->
-        <el-card shadow="hover" v-if="model == 2">
-          <el-descriptions title="目标总数">
-            <el-descriptions-item label="蛋白质">{{ musclePlus.protein }} </el-descriptions-item>
-            <el-descriptions-item label="脂肪">{{ musclePlus.fat }} </el-descriptions-item>
-            <el-descriptions-item label="碳水">
-              {{ musclePlus.carbohydrate }}
-            </el-descriptions-item>
-          </el-descriptions>
-        </el-card>
-      </div>
-
       <!-- 上部表格 -->
+      <PersonalIndicator />
       <div class="topTable">
         <el-card shadow="hover">
           <elementTable :tableConfig="calculateTableConfig" :tableDate="calculateFood" class="topTable">
@@ -60,7 +25,6 @@
         </el-card>
       </div>
 
-      <!-- 上部表格-->
     </div>
 
     <!-- 下部区域 -->
@@ -101,10 +65,11 @@ import tabTable from '@/components/sports/tabTable'
 import PersonalInformation from '@/components/sports/personalInformation'
 import Header from '@/components/sports/header'
 import Initialization from '@/components/sports/initialization'
+import PersonalIndicator from '@/components/sports/personalIndicator.vue'
 
 export default defineComponent({
   name: 'index',
-  components: { tabTable, PersonalInformation, Header, Initialization },
+  components: { tabTable, PersonalInformation, Header, Initialization, PersonalIndicator },
   computed: {
     ...mapState(['form', 'count']),
     ...mapGetters(['muscleMini', 'musclePlus'])
@@ -119,7 +84,6 @@ export default defineComponent({
     })
     const dataRef = toRefs(data)
 
-    const ruleFormRef = ref()
     const store = useStore()
     const foodDate = null
     const calculateTableConfig = reactive({
@@ -144,43 +108,6 @@ export default defineComponent({
     // 表单数据
     const formIndex = reactive(store.state.form)
     const selectFood = ref('1')
-    // 表单规则
-    const rules = reactive({
-      name: [
-        {
-          required: true,
-          message: '请输入名称',
-          trigger: 'blur'
-        },
-        {
-          min: 3,
-          max: 7,
-          message: '名称长度请在3-7个字符之间',
-          trigger: 'blur'
-        }
-      ],
-      sex: [
-        {
-          required: true,
-          message: '请选择性别',
-          trigger: 'change'
-        }
-      ],
-      weight: [
-        {
-          required: true,
-          message: '请输入你的体重',
-          trigger: 'blur'
-        }
-      ],
-      tall: [
-        {
-          required: true,
-          message: '请输入你的身高',
-          trigger: 'blur'
-        }
-      ]
-    })
     // 搜索食物数据
     const searchFood = ref('')
     // 模式选择
@@ -265,8 +192,6 @@ export default defineComponent({
       dialogVisible,
       formIndex,
       addFoodTab,
-      ruleFormRef,
-      rules,
       submitForm,
       resetForm,
       store,
