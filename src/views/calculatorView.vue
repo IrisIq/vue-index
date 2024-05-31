@@ -31,21 +31,8 @@
     <div class="buttom">
       <el-card shadow="hover" :body-style="{ padding: '0px' }" type="border-card">
         <el-tabs class="foodChoices" tabPosition="left" v-model="selectFood">
-          <el-tab-pane label="主食" name="1">
-            <!-- 主食表格 -->
-            <tabTable :type="selectFood" v-if="selectFood == 1" @addFoodTab="addFoodTab"></tabTable>
-          </el-tab-pane>
-
-          <el-tab-pane label="蔬菜" name="2">
-            <tabTable :type="selectFood" v-if="selectFood == 2"></tabTable>
-          </el-tab-pane>
-
-          <el-tab-pane label="肉" name="3">
-            <tabTable :type="selectFood" v-if="selectFood == 3"></tabTable>
-          </el-tab-pane>
-
-          <el-tab-pane label="其他" name="5">
-            <tabTable :type="selectFood" v-if="selectFood == 5"></tabTable>
+          <el-tab-pane v-for="({food_type_id:id,food_name:name}) in foodType" :key="id" :name="id" :label="name">
+            <tabTable :type="id" @addFoodTab="addFoodTab"></tabTable>
           </el-tab-pane>
         </el-tabs>
       </el-card>
@@ -66,7 +53,8 @@ import PersonalInformation from '@/components/sports/personalInformation'
 import Header from '@/components/sports/header'
 import Initialization from '@/components/sports/initialization'
 import PersonalIndicator from '@/components/sports/personalIndicator.vue'
-
+import { getFoodType } from '@/api/api'
+import { dataType } from 'element-plus/es/components/table-v2/src/common'
 export default defineComponent({
   name: 'index',
   components: { tabTable, PersonalInformation, Header, Initialization, PersonalIndicator },
@@ -80,7 +68,8 @@ export default defineComponent({
       columnsIndex: null, // 选中的数据
       calculateFood: [], // 计算表数据
       standardValue: [], // 计算表中的种类标准值
-      alterKey: ['food_heat', 'food_protein', 'food_carbohydrate', 'food_fat']
+      alterKey: ['food_heat', 'food_protein', 'food_carbohydrate', 'food_fat'],
+      foodType: []
     })
     const dataRef = toRefs(data)
 
@@ -107,11 +96,18 @@ export default defineComponent({
     })
     // 表单数据
     const formIndex = reactive(store.state.form)
-    const selectFood = ref('1')
+    const selectFood = ref(1)
     // 搜索食物数据
     const searchFood = ref('')
     // 模式选择
     const model = ref('')
+
+    const getFoodTypeFun = async () => {
+      const { data: { data: resdata } } = await getFoodType()
+      console.log(resdata)
+      data.foodType = [...resdata]
+      console.log(data.foodType)
+    }
 
     // 判断是否需要显示
     const isShow = () => {
@@ -170,7 +166,6 @@ export default defineComponent({
     }
     // 添加食物回调
     const addFoodTab = ({ data: value }) => {
-      // console.log(value)
       const findIndex = data.calculateFood.findIndex(item => item.food_id === value.food_id)
       if (findIndex === -1) {
         // 未添加过这个 直接添加
@@ -188,6 +183,7 @@ export default defineComponent({
         ).toFixed(2)
       }
     }
+    getFoodTypeFun()
     return {
       dialogVisible,
       formIndex,

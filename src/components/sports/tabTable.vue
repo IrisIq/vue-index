@@ -15,7 +15,7 @@ onMounted(() => {
 })
 
 const props = defineProps({
-  type: String
+  type: Number
 })
 const data = reactive({
   calculateTableConfig: {

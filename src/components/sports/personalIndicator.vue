@@ -2,7 +2,7 @@
  * @Author: IrisIq
  * @Date: 2024-05-16 15:53:33
  * @LastEditors: IrisIq
- * @LastEditTime: 2024-05-17 15:13:55
+ * @LastEditTime: 2024-05-17 16:39:53
  * @Description: 个人指标选择 展示 模板
 -->
 <template>
@@ -40,7 +40,8 @@ const data = reactive({
 })
 
 const getRadioArr = () => {
-  data.radioArr = Object.keys(fingertipsConfig)
+  // data.radioArr = Object.keys(fingertipsConfig)
+  const key = Object.keys(fingertipsConfig)
 }
 const radioChange = (e) => {
   const keyArr = ['fat', 'carbohydrate', 'protein']
